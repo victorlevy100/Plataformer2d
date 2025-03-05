@@ -21,6 +21,11 @@ public class Player : MonoBehaviour
     public float animationDuration = 0.5f;
     public Ease ease = Ease.OutBack;
 
+    [Header("Animation player")]
+    public string boolRun = "Run";
+    public Animator animator;
+    public float playerSwipeDuration = 0.1f;
+
     private float _currentSpeed;
     private bool _hasTouchedGround = false;
 
@@ -47,13 +52,24 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             myRigidbody2D.velocity = new Vector2(-_currentSpeed, myRigidbody2D.velocity.y);
+            if (myRigidbody2D.transform.localScale.x != -1)
+                myRigidbody2D.transform.DOScaleX(-1, playerSwipeDuration);
+            animator.SetBool(boolRun, true);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             myRigidbody2D.velocity = new Vector2(_currentSpeed, myRigidbody2D.velocity.y);
+            if (myRigidbody2D.transform.localScale.x != 1)
+                myRigidbody2D.transform.DOScaleX(1, playerSwipeDuration);
+            animator.SetBool(boolRun, true);
+        }
+        else
+        {
+            animator.SetBool(boolRun, false);
+            
         }
 
-        if(myRigidbody2D.velocity.x < 0)
+        if (myRigidbody2D.velocity.x < 0)
         {
             myRigidbody2D.velocity += friction;
         }
